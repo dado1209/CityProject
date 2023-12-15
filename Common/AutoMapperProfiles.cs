@@ -12,6 +12,7 @@ namespace ExampleProject.Common
             CreateMap<UpdateCityDto, City>();
             CreateMap<CityParkDto, CityPark>();
             CreateMap<CityPark, CityParkDto>();
+            CreateMap<UpdateCityParkDto, CityPark>();
         }
     }
 }

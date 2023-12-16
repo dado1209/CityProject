@@ -9,36 +9,39 @@ namespace ExampleProject.Repository
 {
     public class CityParkRepository : ICityParkRepository
     {
-        private readonly DataContext dc;
-        private readonly IMapper mapper;
+        private readonly DataContext _dc;
+        private readonly IMapper _mapper;
 
         public CityParkRepository(DataContext dc, IMapper mapper)
         {
-            this.dc = dc;
-            this.mapper = mapper;
+            _dc = dc;
+            _mapper = mapper;
         }
 
         public async Task AddAsync(CityPark cityPark)
         {
-            await dc.CityParks.AddAsync(cityPark);
+            var city = await _dc.Cities.FindAsync(cityPark.CityId);
+            if (city == null)
+                throw new Exception("City could not be found");
+            await _dc.CityParks.AddAsync(cityPark);
         }
 
         public async Task DeleteAsync(int cityParkId)
         {
-            var cityPark = await dc.CityParks.FindAsync(cityParkId);
+            var cityPark = await _dc.CityParks.FindAsync(cityParkId);
             if (cityPark == null)
                 throw new Exception("Park could not be deleted");
-            dc.CityParks.Remove(cityPark);
+            _dc.CityParks.Remove(cityPark);
         }
 
         public async Task<IEnumerable<CityPark>> GetAllAsync()
         {
-            return await dc.CityParks.ToListAsync();
+            return await _dc.CityParks.ToListAsync();
         }
 
         public async Task<CityPark> GetAsync(int cityParkId)
         {
-            var cityPark = await dc.CityParks.FindAsync(cityParkId);
+            var cityPark = await _dc.CityParks.FindAsync(cityParkId);
             if (cityPark == null)
                 throw new Exception("Park could not be found");
             return cityPark;
@@ -46,7 +49,7 @@ namespace ExampleProject.Repository
 
         public async Task<IEnumerable<CityPark>> GetParksByCityIdAsync(int cityId)
         {
-            var city = await dc.Cities.FindAsync(cityId);
+            var city = await _dc.Cities.FindAsync(cityId);
             if (city == null)
                 throw new Exception("City could not be found");
             return city.Parks;
@@ -54,10 +57,10 @@ namespace ExampleProject.Repository
 
         public async Task UpdateAsync(UpdateCityParkDto cityParkDto, int cityParkId)
         {
-            var cityPark = await dc.CityParks.FindAsync(cityParkId);
+            var cityPark = await _dc.CityParks.FindAsync(cityParkId);
             if (cityPark == null)
                 throw new Exception("Park could not be found");
-            mapper.Map(cityParkDto, cityPark);
+            _mapper.Map(cityParkDto, cityPark);
         }
     }
 }

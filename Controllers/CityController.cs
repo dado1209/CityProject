@@ -12,28 +12,28 @@ namespace ExampleProject.Controllers
     [ApiController]
     public class CityController : ControllerBase
     {
-        private readonly IUnitOfWork uow;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
         public CityController(IUnitOfWork uow, IMapper mapper)
         {
-            this.uow = uow;
-            this.mapper = mapper;
+            _uow = uow;
+            _mapper = mapper;
         }
         [HttpGet]
         // GET api/City
         public async Task<IActionResult> GetCities() { 
-            var cities = await uow.CityRepository.GetAllAsync();
-            var citiesDto = mapper.Map<IEnumerable<CityDto>>(cities);
+            var cities = await _uow.CityRepository.GetAllAsync();
+            var citiesDto = _mapper.Map<IEnumerable<CityDto>>(cities);
             return Ok(citiesDto);
         }
         [HttpPost]
         // POST api/City
         public async Task<IActionResult> AddCity(CityDto cityDto)
         {
-            var city = mapper.Map<City>(cityDto);
-            await uow.CityRepository.AddAsync(city);
-            await uow.SaveAsync();
+            var city = _mapper.Map<City>(cityDto);
+            await _uow.CityRepository.AddAsync(city);
+            await _uow.SaveAsync();
             return StatusCode(201);
         }
 
@@ -41,8 +41,8 @@ namespace ExampleProject.Controllers
         // DELETE api/City/{id}
         public async Task<IActionResult> DeleteCity(int id)
         {
-            await uow.CityRepository.DeleteAsync(id);
-            await uow.SaveAsync();
+            await _uow.CityRepository.DeleteAsync(id);
+            await _uow.SaveAsync();
             return Ok(id);
         }
 
@@ -50,15 +50,15 @@ namespace ExampleProject.Controllers
         // PUT api/City/{id}
         public async Task<IActionResult> UpdateCity(int id, UpdateCityDto cityDto)
         {
-            await uow.CityRepository.UpdateAsync(cityDto, id);
-            await uow.SaveAsync();
+            await _uow.CityRepository.UpdateAsync(cityDto, id);
+            await _uow.SaveAsync();
             return StatusCode(200);
         }
 
         [HttpGet("{id}")]
         // GET api/City/{id}
         public async Task<IActionResult> GetCity(int id) { 
-            var city = await uow.CityRepository.GetAsync(id);
-            return Ok(mapper.Map<CityDto>(city)); }
+            var city = await _uow.CityRepository.GetAsync(id);
+            return Ok(_mapper.Map<CityDto>(city)); }
     }
 }

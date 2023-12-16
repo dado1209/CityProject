@@ -13,22 +13,22 @@ namespace ExampleProject.Controllers
     [ApiController]
     public class CityParkController : ControllerBase
     {
-        private readonly IUnitOfWork uow;
-        private readonly IMapper mapper;
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
         public CityParkController(IUnitOfWork uow, IMapper mapper)
         {
-            this.uow = uow;
-            this.mapper = mapper;
+            _uow = uow;
+            _mapper = mapper;
         }
 
         [HttpPost]
         // POST api/CityPark
         public async Task<IActionResult> AddCityPark(CityParkDto cityParkDto)
         {
-            var park = mapper.Map<CityPark>(cityParkDto);
-            await uow.CityParkRepository.AddAsync(park);
-            await uow.SaveAsync();
+            var park = _mapper.Map<CityPark>(cityParkDto);
+            await _uow.CityParkRepository.AddAsync(park);
+            await _uow.SaveAsync();
             return StatusCode(201);
         }
 
@@ -36,16 +36,16 @@ namespace ExampleProject.Controllers
         // GET api/CityPark/{id}
         public async Task<IActionResult> GetCityPark(int id)
         {
-            var park = await uow.CityParkRepository.GetAsync(id);
-            return Ok(mapper.Map<CityParkDto>(park));
+            var park = await _uow.CityParkRepository.GetAsync(id);
+            return Ok(_mapper.Map<CityParkDto>(park));
         }
 
         [HttpGet]
         // GET api/CityPark
         public async Task<IActionResult> GetCityParks()
         {
-            var cityParks = await uow.CityParkRepository.GetAllAsync();
-            var cityParksDto = mapper.Map<IEnumerable<CityParkDto>>(cityParks);
+            var cityParks = await _uow.CityParkRepository.GetAllAsync();
+            var cityParksDto = _mapper.Map<IEnumerable<CityParkDto>>(cityParks);
             return Ok(cityParksDto);
         }
     }

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using ExampleProject.DAL;
-using ExampleProject.DAL.Common;
-using ExampleProject.Dtos;
-using ExampleProject.Models;
+using CityProject.DAL.Common;
+using CityProject.Dtos;
+using CityProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

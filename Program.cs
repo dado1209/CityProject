@@ -1,9 +1,9 @@
-using ExampleProject.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ExampleProject.Common;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using CityProject.DAL;
+using CityProject.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())

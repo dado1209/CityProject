@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CityProject.Models.Common\CityProject.Models.Common.csproj" />
     <ProjectReference Include="..\CityProject.Models\CityProject.Models.csproj" />
     <ProjectReference Include="..\CityProject.Repository.Common\CityProject.Repository.Common.csproj" />
   </ItemGroup>

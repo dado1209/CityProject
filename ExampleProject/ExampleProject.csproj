@@ -26,7 +26,6 @@
     <ProjectReference Include="..\CityProject.Common\CityProject.Common.csproj" />
     <ProjectReference Include="..\CityProject.DAL\CityProject.DAL.csproj" />
     <ProjectReference Include="..\CityProject.Dtos\CityProject.Dtos.csproj" />
-    <ProjectReference Include="..\CityProject.Models.Common\CityProject.Models.Common.csproj" />
     <ProjectReference Include="..\CityProject.Models\CityProject.Models.csproj" />
     <ProjectReference Include="..\CityProject.Repository.Common\CityProject.Repository.Common.csproj" />
     <ProjectReference Include="..\CityProject.Repository\CityProject.Repository.csproj" />

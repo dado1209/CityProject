@@ -2,6 +2,7 @@
 using CityProject.DAL.Common;
 using CityProject.Dtos;
 using CityProject.Models;
+using CityProject.Service.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,22 +13,18 @@ namespace ExampleProject.Controllers
     [ApiController]
     public class CityParkController : ControllerBase
     {
-        private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
+        private readonly ICityParkService _cityParkService;
 
-        public CityParkController(IUnitOfWork uow, IMapper mapper)
+        public CityParkController(ICityParkService cityParkService)
         {
-            _uow = uow;
-            _mapper = mapper;
+            _cityParkService = cityParkService;
         }
 
         [HttpPost]
         // POST api/CityPark
         public async Task<IActionResult> AddCityPark(CityParkDto cityParkDto)
         {
-            var park = _mapper.Map<CityPark>(cityParkDto);
-            await _uow.CityParkRepository.AddAsync(park);
-            await _uow.SaveAsync();
+            await _cityParkService.AddCityPark(cityParkDto);
             return StatusCode(201);
         }
 
@@ -35,17 +32,30 @@ namespace ExampleProject.Controllers
         // GET api/CityPark/{id}
         public async Task<IActionResult> GetCityPark(int id)
         {
-            var park = await _uow.CityParkRepository.GetAsync(id);
-            return Ok(_mapper.Map<CityParkDto>(park));
+            return Ok(await _cityParkService.GetCityParkById(id));
         }
 
         [HttpGet]
         // GET api/CityPark
         public async Task<IActionResult> GetCityParks()
         {
-            var cityParks = await _uow.CityParkRepository.GetAllAsync();
-            var cityParksDto = _mapper.Map<IEnumerable<CityParkDto>>(cityParks);
-            return Ok(cityParksDto);
+            return Ok(await _cityParkService.GetAllCityParks());
+        }
+
+        [HttpDelete("{id}")]
+        // DELETE api/CityPark/{id}
+        public async Task<IActionResult> DeleteCityPark(int id)
+        {
+            await _cityParkService.DeleteCityPark(id);
+            return Ok(id);
+        }
+
+        [HttpPut("{id}")]
+        // PUT api/City/{id}
+        public async Task<IActionResult> UpdateCityPark(int id, UpdateCityParkDto cityParkDto)
+        {
+            await _cityParkService.UpdateCityPark(cityParkDto, id);
+            return StatusCode(200);
         }
     }
 }

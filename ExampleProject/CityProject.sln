@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleProject", "ExampleProject.csproj", "{1937F512-7C33-4830-BCF3-659225892DCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityProject.WebAPI", "CityProject.WebAPI.csproj", "{1937F512-7C33-4830-BCF3-659225892DCC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityProject.DAL", "..\CityProject.DAL\CityProject.DAL.csproj", "{4BFE7BA7-30EE-4DE0-BB53-E30E96283C6C}"
 EndProject
@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityProject.Repository", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityProject.Common", "..\CityProject.Common\CityProject.Common.csproj", "{CF964BB4-6AB3-486B-B8BE-90FCAC2DBEBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityProject.Models.Common", "..\CityProject.Models.Common\CityProject.Models.Common.csproj", "{4AFAB116-2937-409F-8117-417C426F398D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityProject.Models.Common", "..\CityProject.Models.Common\CityProject.Models.Common.csproj", "{4AFAB116-2937-409F-8117-417C426F398D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityProject.Service", "..\CityProject.Service\CityProject.Service.csproj", "{31C81D76-BFA0-43E3-A918-6B54E793E1FC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityProject.Service.Common", "..\CityProject.Service.Common\CityProject.Service.Common.csproj", "{33C21F2A-7478-49C5-A357-0FE02CBBE387}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{4AFAB116-2937-409F-8117-417C426F398D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AFAB116-2937-409F-8117-417C426F398D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AFAB116-2937-409F-8117-417C426F398D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31C81D76-BFA0-43E3-A918-6B54E793E1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31C81D76-BFA0-43E3-A918-6B54E793E1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31C81D76-BFA0-43E3-A918-6B54E793E1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31C81D76-BFA0-43E3-A918-6B54E793E1FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33C21F2A-7478-49C5-A357-0FE02CBBE387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C21F2A-7478-49C5-A357-0FE02CBBE387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C21F2A-7478-49C5-A357-0FE02CBBE387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C21F2A-7478-49C5-A357-0FE02CBBE387}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

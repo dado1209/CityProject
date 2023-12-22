@@ -4,8 +4,8 @@ using CityProject.Models;
 
 namespace CityProject.Repository.Common
 {
-    public interface ICityParkRepository : IGenericRepository<CityPark, UpdateCityParkDto>
+    public interface ICityParkRepository : IGenericRepository<CityPark>
     {
-        Task<IEnumerable<CityPark>> GetParksByCityIdAsync(int id);
+        IEnumerable<CityPark> GetParksByCity(City city);
     }
 }

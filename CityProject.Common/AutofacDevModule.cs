@@ -3,6 +3,8 @@ using CityProject.Repository;
 using CityProject.Repository.Common;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
 using Autofac;
+using CityProject.Service;
+using CityProject.Service.Common;
 
 namespace CityProject.Common
 {
@@ -14,6 +16,8 @@ namespace CityProject.Common
             builder.RegisterType<CityRepository>().As<ICityRepository>().InstancePerLifetimeScope();
             builder.RegisterType<CityParkRepository>().As<ICityParkRepository>().InstancePerLifetimeScope();
             builder.RegisterType<UnitOfWork>().As<DAL.Common.IUnitOfWork>().InstancePerLifetimeScope();
+            builder.RegisterType<CityService>().As<ICityService>().InstancePerLifetimeScope();
+            builder.RegisterType<CityParkService>().As<ICityParkService>().InstancePerLifetimeScope();
             builder.RegisterAutoMapper(typeof(AutoMapperProfiles).Assembly);
         }
     }

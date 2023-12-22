@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CityProject.Dtos
 {
+    // User is only allowed to update city name
     public class UpdateCityDto
     {
         [Required]

@@ -62,7 +62,7 @@ namespace CityProject.Service
             var cityPark = await _uow.CityParkRepository.GetAsync(cityParkId);
             if (cityPark == null) throw new ObjectNotFoundException("Park could not be updated");
             // Use auto_mapper to map new values from cityParkDto to cityPark
-            _mapper.Map(cityParkDto, cityParkId);
+            _mapper.Map(cityParkDto, cityPark);
             await _uow.SaveAsync();
         }
     }

@@ -5,6 +5,7 @@ using CityProject.Models;
 using CityProject.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Entity.Core;
 
 namespace ExampleProject.Controllers
 {
@@ -19,39 +20,82 @@ namespace ExampleProject.Controllers
             _cityService = cityService;
         }
         [HttpGet]
-        // GET api/City
+        // GET api/Cities
         public async Task<IActionResult> GetCities() { 
             var cities = await _cityService.GetAllCities();
             return Ok(cities);
         }
         [HttpPost]
-        // POST api/City
+        // POST api/Cities
         public async Task<IActionResult> AddCity(CityDto cityDto)
         {
-            await _cityService.AddCity(cityDto);
-            return StatusCode(201);
+            try {
+                await _cityService.AddCity(cityDto);
+                return StatusCode(201);
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch { 
+                return BadRequest("Something went wrong");
+            }
         }
 
         [HttpDelete("{id}")]
-        // DELETE api/City/{id}
+        // DELETE api/Cities/{id}
         public async Task<IActionResult> DeleteCity(int id)
         {
-            await _cityService.DeleteCity(id);
-            return Ok(id);
+            try
+            {
+                await _cityService.DeleteCity(id);
+                return Ok(id);
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Something went wrong");
+            }
         }
 
         [HttpPut("{id}")]
-        // PUT api/City/{id}
+        // PUT api/Cities/{id}
         public async Task<IActionResult> UpdateCity(int id, UpdateCityDto cityDto)
         {
-            await _cityService.UpdateCity(cityDto, id);
-            return StatusCode(200);
+            try
+            {
+                await _cityService.UpdateCity(cityDto, id);
+                return StatusCode(200);
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Something went wrong");
+            }
         }
 
         [HttpGet("{id}")]
-        // GET api/City/{id}
-        public async Task<IActionResult> GetCity(int id) { 
-            var city = await _cityService.GetCityById(id);
-            return Ok(city); }
+        // GET api/Cities/{id}
+        public async Task<IActionResult> GetCity(int id) {
+            try
+            {
+                var city = await _cityService.GetCityById(id);
+                return Ok(city);
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Something went wrong");
+            }
+        }
     }
 }

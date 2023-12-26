@@ -5,6 +5,7 @@ using CityProject.Models;
 using CityProject.Service.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Entity.Core;
 
 
 namespace ExampleProject.Controllers
@@ -21,41 +22,96 @@ namespace ExampleProject.Controllers
         }
 
         [HttpPost]
-        // POST api/CityPark
+        // POST api/CityParks
         public async Task<IActionResult> AddCityPark(CityParkDto cityParkDto)
         {
-            await _cityParkService.AddCityPark(cityParkDto);
-            return StatusCode(201);
+            try
+            {
+                await _cityParkService.AddCityPark(cityParkDto);
+                return StatusCode(201);
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Something went wrong");
+            }
         }
 
         [HttpGet("{id}")]
-        // GET api/CityPark/{id}
+        // GET api/CityParks/{id}
         public async Task<IActionResult> GetCityPark(int id)
         {
-            return Ok(await _cityParkService.GetCityParkById(id));
+            try
+            {
+                return Ok(await _cityParkService.GetCityParkById(id));
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Something went wrong");
+            }
         }
 
         [HttpGet]
-        // GET api/CityPark
+        // GET api/CityParks
         public async Task<IActionResult> GetCityParks()
         {
-            return Ok(await _cityParkService.GetAllCityParks());
+            try
+            {
+                return Ok(await _cityParkService.GetAllCityParks());
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Something went wrong");
+            }
         }
 
         [HttpDelete("{id}")]
-        // DELETE api/CityPark/{id}
+        // DELETE api/CityParks/{id}
         public async Task<IActionResult> DeleteCityPark(int id)
         {
-            await _cityParkService.DeleteCityPark(id);
-            return Ok(id);
+            try
+            {
+                await _cityParkService.DeleteCityPark(id);
+                return Ok(id);
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Something went wrong");
+            }
         }
 
         [HttpPut("{id}")]
-        // PUT api/City/{id}
+        // PUT api/CityParks/{id}
         public async Task<IActionResult> UpdateCityPark(int id, UpdateCityParkDto cityParkDto)
         {
-            await _cityParkService.UpdateCityPark(cityParkDto, id);
-            return StatusCode(200);
+            try
+            {
+                await _cityParkService.UpdateCityPark(cityParkDto, id);
+                return StatusCode(200);
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return BadRequest("Something went wrong");
+            }
         }
     }
 }

@@ -35,10 +35,10 @@ namespace ExampleProject.Controllers
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
-            catch { 
-                return BadRequest("Something went wrong");
+            catch {
+                return StatusCode(500, "Something went wrong");
             }
         }
 
@@ -53,11 +53,11 @@ namespace ExampleProject.Controllers
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             catch
             {
-                return BadRequest("Something went wrong");
+                return StatusCode(500, "Something went wrong");
             }
         }
 
@@ -72,11 +72,11 @@ namespace ExampleProject.Controllers
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             catch
             {
-                return BadRequest("Something went wrong");
+                return StatusCode(500, "Something went wrong");
             }
         }
 
@@ -90,11 +90,11 @@ namespace ExampleProject.Controllers
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             catch
             {
-                return BadRequest("Something went wrong");
+                return StatusCode(500, "Something went wrong");
             }
         }
     }

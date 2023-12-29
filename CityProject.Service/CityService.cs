@@ -35,7 +35,7 @@ namespace CityProject.Service
         public async Task<IEnumerable<CityDto>> GetAllCities()
         {
             var cities = await _uow.CityRepository.GetAllAsync();
-            // Map cities to cities dto and return before returning the value
+            // Map cities to cities dto before returning the value
             return  _mapper.Map<IEnumerable<CityDto>>(cities); ;
         }
 

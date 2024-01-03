@@ -3,6 +3,8 @@ using CityProject.Dtos;
 using CityProject.Models;
 using AutoMapper;
 using System.Data.Entity.Core;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace CityProject.Service
 {
@@ -10,11 +12,13 @@ namespace CityProject.Service
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
+        private readonly ISieveProcessor _sieveProcessor;
 
-        public CityService(IUnitOfWork uow, IMapper mapper)
+        public CityService(IUnitOfWork uow, IMapper mapper, ISieveProcessor sieveProcessor)
         {
             _uow = uow;
             _mapper = mapper;
+            _sieveProcessor = sieveProcessor;
         }
         public async Task AddCity(CityDto cityDto)
         {
@@ -32,11 +36,12 @@ namespace CityProject.Service
             await _uow.SaveAsync();
         }
 
-        public async Task<IEnumerable<CityDto>> GetAllCities()
+        public async Task<List<CityDto>> GetAllCities(SieveModel sieveModel)
         {
-            var cities = await _uow.CityRepository.GetAllAsync();
+            //apply query parameters and get all cities which match
+            var cities = _sieveProcessor.Apply(sieveModel, _uow.CityRepository.GetAllAsync());
             // Map cities to cities dto before returning the value
-            return  _mapper.Map<IEnumerable<CityDto>>(cities); ;
+            return _mapper.Map<List<CityDto>>(cities); 
         }
 
         public async Task<CityDto> GetCityById(int cityId)

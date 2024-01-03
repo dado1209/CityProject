@@ -1,5 +1,6 @@
 ﻿using CityProject.Dtos;
 using CityProject.Models;
+using Sieve.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace CityProject.Service
     public interface ICityService
     {
         Task<CityDto> GetCityById(int id);
-        Task<IEnumerable<CityDto>> GetAllCities();
+        Task<List<CityDto>> GetAllCities(SieveModel sieveModel);
 
         Task AddCity(CityDto cityDto);
         Task DeleteCity(int id);

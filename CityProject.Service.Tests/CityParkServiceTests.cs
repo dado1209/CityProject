@@ -15,7 +15,7 @@ namespace CityProject.Service.Tests
     public class CityParkServiceTests
     {
         private readonly CityParkService _cityParkService;
-        private readonly Mock<IUnitOfWork> _uowMock = new Mock<IUnitOfWork>();
+        private readonly Mock<IUnitOfWork> _uowMock = new();
         // Use real mapper to test if result is cityDto
         private readonly IMapper mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperProfiles())));
 
@@ -89,7 +89,7 @@ namespace CityProject.Service.Tests
             // Act
             var result = await _cityParkService.GetAllCityParks();
             // Assert
-            result.Should().HaveCount(cityParks.Count());
+            result.Should().HaveCount(cityParks.Count);
             result.Should().BeOfType<List<CityParkDto>>();
         }
 
@@ -147,7 +147,7 @@ namespace CityProject.Service.Tests
             // Act
             var result = await _cityParkService.GetCityParksByCityId(city.Id);
             // Assert
-            result.Should().HaveCount(cityParks.Count());
+            result.Should().HaveCount(cityParks.Count);
             result.Should().BeOfType<List<CityParkDto>>();
         }
 

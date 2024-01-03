@@ -12,9 +12,9 @@ namespace CityProject.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private DataContext _dc = null;
+        private DataContext _dc;
 
-        private DbSet<T> table = null;
+        private DbSet<T> table;
 
 
         public GenericRepository(DataContext dc)
@@ -33,9 +33,9 @@ namespace CityProject.Repository
             table.Remove(entity);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public IQueryable<T> GetAllAsync()
         {
-            return await table.ToListAsync();
+            return table.AsQueryable();
         }
 
         public async Task<T> GetAsync(int id)

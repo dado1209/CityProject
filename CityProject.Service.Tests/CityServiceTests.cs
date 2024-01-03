@@ -14,7 +14,7 @@ namespace CityProject.Service.Tests
     public class CityServiceTests
     {
         private readonly CityService _cityService;
-        private readonly Mock<IUnitOfWork> _uowMock = new Mock<IUnitOfWork>();
+        private readonly Mock<IUnitOfWork> _uowMock = new();
         // Use real mapper to test if result is cityDto
         private readonly IMapper mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperProfiles())));
 
@@ -81,7 +81,7 @@ namespace CityProject.Service.Tests
             // Act
             var result = await _cityService.GetAllCities();
             // Assert
-            result.Should().HaveCount(cities.Count());
+            result.Should().HaveCount(cities.Count);
             result.Should().BeOfType<List<CityDto>>();
         }
 

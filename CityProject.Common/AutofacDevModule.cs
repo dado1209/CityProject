@@ -4,6 +4,7 @@ using AutoMapper.Contrib.Autofac.DependencyInjection;
 using Autofac;
 using CityProject.Service;
 using CityProject.Service.Common;
+using Sieve.Services;
 
 namespace CityProject.Common
 {
@@ -18,6 +19,7 @@ namespace CityProject.Common
             builder.RegisterType<CityService>().As<ICityService>().InstancePerLifetimeScope();
             builder.RegisterType<CityParkService>().As<ICityParkService>().InstancePerLifetimeScope();
             builder.RegisterAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            builder.RegisterType<SieveProcessor>().As<ISieveProcessor>().InstancePerLifetimeScope();
         }
     }
 }

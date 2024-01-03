@@ -4,6 +4,7 @@ using CityProject.Models;
 using CityProject.Service.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
 using System.Data.Entity.Core;
 
 
@@ -59,12 +60,12 @@ namespace ExampleProject.Controllers
         }
 
         [HttpGet]
-        // GET api/CityParks
-        public async Task<IActionResult> GetCityParks()
+        //GET api/CityParks
+        public async Task<IActionResult> GetCityParks([FromQuery] SieveModel sieveModel)
         {
             try
             {
-                return Ok(await _cityParkService.GetAllCityParks());
+                return Ok(await _cityParkService.GetAllCityParks(sieveModel));
             }
             catch (ObjectNotFoundException ex)
             {

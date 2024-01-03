@@ -4,6 +4,7 @@ using CityProject.Models;
 using CityProject.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
 using System.Data.Entity.Core;
 
 namespace ExampleProject.Controllers
@@ -20,9 +21,8 @@ namespace ExampleProject.Controllers
         }
         [HttpGet]
         // GET api/Cities
-        public async Task<IActionResult> GetCities() { 
-            var cities = await _cityService.GetAllCities();
-            return Ok(cities);
+        public async Task<IActionResult> GetCities([FromQuery] SieveModel sieveModel) {
+            return Ok(await _cityService.GetAllCities(sieveModel));
         }
         [HttpPost]
         // POST api/Cities

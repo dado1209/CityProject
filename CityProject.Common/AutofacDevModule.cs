@@ -1,5 +1,4 @@
-﻿using CityProject.DAL;
-using CityProject.Repository;
+﻿using CityProject.Repository;
 using CityProject.Repository.Common;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
 using Autofac;
@@ -15,7 +14,7 @@ namespace CityProject.Common
             // Binds interfaces to specific classes when doing dependeny injection
             builder.RegisterType<CityRepository>().As<ICityRepository>().InstancePerLifetimeScope();
             builder.RegisterType<CityParkRepository>().As<ICityParkRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<UnitOfWork>().As<DAL.Common.IUnitOfWork>().InstancePerLifetimeScope();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.RegisterType<CityService>().As<ICityService>().InstancePerLifetimeScope();
             builder.RegisterType<CityParkService>().As<ICityParkService>().InstancePerLifetimeScope();
             builder.RegisterAutoMapper(typeof(AutoMapperProfiles).Assembly);

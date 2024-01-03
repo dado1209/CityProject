@@ -1,6 +1,6 @@
 ﻿using CityProject.Repository.Common;
 
-namespace CityProject.DAL.Common
+namespace CityProject.Repository.Common
 {
     public interface IUnitOfWork
     {

@@ -1,7 +1,7 @@
-﻿using CityProject.DAL.Common;
+﻿using CityProject.DAL;
 using CityProject.Repository.Common;
 
-namespace CityProject.DAL
+namespace CityProject.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {

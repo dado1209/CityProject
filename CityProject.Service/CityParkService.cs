@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CityProject.DAL.Common;
+using CityProject.Repository.Common;
 using CityProject.Dtos;
 using CityProject.Models;
 using CityProject.Service.Common;

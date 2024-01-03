@@ -14,22 +14,26 @@ namespace ExampleProject.Controllers
     public class CityController : ControllerBase
     {
         private readonly ICityService _cityService;
+        private readonly IMapper _mapper;
 
-        public CityController(ICityService cityService)
+        public CityController(ICityService cityService, IMapper mapper)
         {
             _cityService = cityService;
+            _mapper = mapper;
         }
         [HttpGet]
         // GET api/Cities
         public async Task<IActionResult> GetCities([FromQuery] SieveModel sieveModel) {
-            return Ok(await _cityService.GetAllCities(sieveModel));
+            var cities = await _cityService.GetAllCities(sieveModel);
+            return Ok(_mapper.Map<List<CityDto>>(cities));
         }
         [HttpPost]
         // POST api/Cities
         public async Task<IActionResult> AddCity(CityDto cityDto)
         {
             try {
-                await _cityService.AddCity(cityDto);
+                var city = _mapper.Map<City>(cityDto);
+                await _cityService.AddCity(city);
                 return StatusCode(201);
             }
             catch (ObjectNotFoundException ex)
@@ -66,14 +70,15 @@ namespace ExampleProject.Controllers
         {
             try
             {
-                await _cityService.UpdateCity(cityDto, id);
+                var updateCity = _mapper.Map<UpdateCity>(cityDto);
+                await _cityService.UpdateCity(updateCity, id);
                 return StatusCode(200);
             }
             catch (ObjectNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            catch
+            catch (Exception ex) 
             {
                 return StatusCode(500, "Something went wrong");
             }
@@ -85,7 +90,7 @@ namespace ExampleProject.Controllers
             try
             {
                 var city = await _cityService.GetCityById(id);
-                return Ok(city);
+                return Ok(_mapper.Map<CityDto>(city));
             }
             catch (ObjectNotFoundException ex)
             {

@@ -1,5 +1,5 @@
-﻿using CityProject.DAL.Entities;
-
+﻿using CityProject.Dtos;
+using CityProject.Models;
 
 namespace CityProject.Repository.Common
 {

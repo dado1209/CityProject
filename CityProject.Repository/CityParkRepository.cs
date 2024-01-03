@@ -1,15 +1,16 @@
 ﻿using CityProject.DAL;
+using CityProject.DAL.Entities;
 using CityProject.Models;
 using CityProject.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace CityProject.Repository
 {
-    public class CityParkRepository : GenericRepository<CityPark>,ICityParkRepository
+    public class CityParkRepository : GenericRepository<CityParkEntity>,ICityParkRepository
     {
         public CityParkRepository(DataContext dc) : base(dc) { }
 
-        public IEnumerable<CityPark> GetParksByCity(City city)
+        public IEnumerable<CityParkEntity> GetParksByCity(CityEntity city)
         {
             return city.Parks;
         }

@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CityProject.Repository.Common\CityProject.Repository.Common.csproj" />
+    <ProjectReference Include="..\CityProject.DAL\CityProject.DAL.csproj" />
+    <ProjectReference Include="..\CityProject.Repository.Common\CityProject.Repository.Common2.csproj" />
     <ProjectReference Include="..\CityProject.Repository\CityProject.Repository.csproj" />
     <ProjectReference Include="..\CityProject.Service.Common\CityProject.Service.Common.csproj" />
     <ProjectReference Include="..\CityProject.Service\CityProject.Service.csproj" />

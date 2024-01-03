@@ -1,4 +1,4 @@
-﻿using CityProject.Models;
+﻿using CityProject.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CityProject.DAL
@@ -9,9 +9,9 @@ namespace CityProject.DAL
         {
         }
 
-        public DbSet<City> Cities
+        public DbSet<CityEntity> Cities
         { get; set; }
 
-        public DbSet<CityPark> CityParks { get; set; }
+        public DbSet<CityParkEntity> CityParks { get; set; }
     }
 }

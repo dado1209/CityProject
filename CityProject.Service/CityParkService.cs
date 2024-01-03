@@ -6,6 +6,7 @@ using CityProject.Service.Common;
 using System.Data.Entity.Core;
 using Sieve.Services;
 using Sieve.Models;
+using CityProject.DAL.Entities;
 
 namespace CityProject.Service
 {
@@ -22,53 +23,53 @@ namespace CityProject.Service
             _mapper = mapper;
             _sieveProcessor = sieveProcessor;
         }
-        public async Task AddCityPark(CityParkDto cityParkDto)
+        public async Task AddCityPark(CityPark cityPark)
         {
-            // Map the cityParkDto to cityPark
-            var cityPark = _mapper.Map<CityPark>(cityParkDto);
-            var city = await _uow.CityRepository.GetAsync(cityPark.CityId);
-            if (city == null) throw new ObjectNotFoundException("City could not be found");
-            await _uow.CityParkRepository.AddAsync(cityPark);
+            // Map the cityPark to cityParkEntity
+            var cityParkEntity = _mapper.Map<CityParkEntity>(cityPark);
+            var cityEntity = await _uow.CityRepository.GetAsync(cityParkEntity.CityId);
+            if (cityEntity == null) throw new ObjectNotFoundException("City could not be found");
+            await _uow.CityParkRepository.AddAsync(cityParkEntity);
             await _uow.SaveAsync();
         }
 
         public async Task DeleteCityPark(int cityParkId)
         {
-            var cityPark = await _uow.CityParkRepository.GetAsync(cityParkId);
-            if (cityPark == null) throw new ObjectNotFoundException("Park could not be found");
-            _uow.CityParkRepository.Delete(cityPark);
+            var cityParkEntity = await _uow.CityParkRepository.GetAsync(cityParkId);
+            if (cityParkEntity == null) throw new ObjectNotFoundException("Park could not be found");
+            _uow.CityParkRepository.Delete(cityParkEntity);
             await _uow.SaveAsync();
         }
 
-        public async Task<List<CityParkDto>> GetAllCityParks(SieveModel sieveModel)
+        public async Task<List<CityPark>> GetAllCityParks(SieveModel sieveModel)
         {
             //apply query parameters and get all city parks which match
-            var cityParks = _sieveProcessor.Apply(sieveModel, _uow.CityParkRepository.GetAllAsync());
+            var cityParkEntities = _sieveProcessor.Apply(sieveModel, _uow.CityParkRepository.GetAllAsync());
             // Map city parks to city park dtos before returning the value
-            return _mapper.Map<List<CityParkDto>>(cityParks);
+            return _mapper.Map<List<CityPark>>(cityParkEntities);
         }
 
-        public async Task<CityParkDto> GetCityParkById(int cityParkId)
+        public async Task<CityPark> GetCityParkById(int cityParkId)
         {
-            var cityPark = await _uow.CityParkRepository.GetAsync(cityParkId);
-            if (cityPark == null) throw new ObjectNotFoundException("Park could not be found");
-            return _mapper.Map<CityParkDto>(cityPark);
+            var cityParkEntity = await _uow.CityParkRepository.GetAsync(cityParkId);
+            if (cityParkEntity == null) throw new ObjectNotFoundException("Park could not be found");
+            return _mapper.Map<CityPark>(cityParkEntity);
         }
 
-        public async Task<IEnumerable<CityParkDto>> GetCityParksByCityId(int cityId)
+        public async Task<IEnumerable<CityPark>> GetCityParksByCityId(int cityId)
         {
-            var city = await _uow.CityRepository.GetAsync(cityId);
-            if (city == null) throw new ObjectNotFoundException("City could not be found");
-            var cityParks = _uow.CityParkRepository.GetParksByCity(city);
-            return _mapper.Map<IEnumerable<CityParkDto>>(cityParks);
+            var cityEntity = await _uow.CityRepository.GetAsync(cityId);
+            if (cityEntity == null) throw new ObjectNotFoundException("City could not be found");
+            var cityParkEntities = _uow.CityParkRepository.GetParksByCity(cityEntity);
+            return _mapper.Map<IEnumerable<CityPark>>(cityParkEntities);
         }
 
-        public async Task UpdateCityPark(UpdateCityParkDto cityParkDto, int cityParkId)
+        public async Task UpdateCityPark(UpdateCityPark cityPark, int cityParkId)
         {
-            var cityPark = await _uow.CityParkRepository.GetAsync(cityParkId);
-            if (cityPark == null) throw new ObjectNotFoundException("Park could not be updated");
-            // Use auto_mapper to map new values from cityParkDto to cityPark
-            _mapper.Map(cityParkDto, cityPark);
+            var cityParkEntity = await _uow.CityParkRepository.GetAsync(cityParkId);
+            if (cityParkEntity == null) throw new ObjectNotFoundException("Park could not be updated");
+            // Use auto_mapper to map new values from cityPark to cityParkEntity
+            _mapper.Map(cityPark, cityParkEntity);
             await _uow.SaveAsync();
         }
     }

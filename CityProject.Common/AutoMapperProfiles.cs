@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CityProject.DAL.Entities;
 using CityProject.Dtos;
 using CityProject.Models;
 
@@ -10,10 +11,18 @@ namespace CityProject.Common
         {
             CreateMap<City, CityDto>();
             CreateMap<CityDto, City>();
-            CreateMap<UpdateCityDto, City>();
+            CreateMap<UpdateCityDto, UpdateCity>();
             CreateMap<CityParkDto, CityPark>();
             CreateMap<CityPark, CityParkDto>();
-            CreateMap<UpdateCityParkDto, CityPark>();
+            CreateMap<UpdateCityParkDto, UpdateCityPark>();
+
+
+            CreateMap<City, CityEntity>();
+            CreateMap<CityEntity, City>();
+            CreateMap<UpdateCity, CityEntity>();
+            CreateMap<CityPark, CityParkEntity>();
+            CreateMap<CityParkEntity, CityPark>();
+            CreateMap<UpdateCityPark, CityParkEntity>();
         }
     }
 }

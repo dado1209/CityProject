@@ -11,14 +11,14 @@ namespace CityProject.Service.Common
 {
     public interface ICityParkService
     {
-        Task<CityParkDto> GetCityParkById(int cityParkId);
-        Task<List<CityParkDto>> GetAllCityParks(SieveModel sieveModel);
+        Task<CityPark> GetCityParkById(int cityParkId);
+        Task<List<CityPark>> GetAllCityParks(SieveModel sieveModel);
 
-        Task AddCityPark(CityParkDto cityParkDto);
+        Task AddCityPark(CityPark cityPark);
         Task DeleteCityPark(int cityParkId);
 
-        Task UpdateCityPark(UpdateCityParkDto cityParkDto, int cityParkId);
+        Task UpdateCityPark(UpdateCityPark cityPark, int cityParkId);
 
-        Task<IEnumerable<CityParkDto>> GetCityParksByCityId(int cityId);
+        Task<IEnumerable<CityPark>> GetCityParksByCityId(int cityId);
     }
 }

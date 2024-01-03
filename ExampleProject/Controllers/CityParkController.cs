@@ -16,10 +16,12 @@ namespace ExampleProject.Controllers
     public class CityParkController : ControllerBase
     {
         private readonly ICityParkService _cityParkService;
+        private readonly IMapper _mapper;
 
-        public CityParkController(ICityParkService cityParkService)
+        public CityParkController(ICityParkService cityParkService, IMapper mapper)
         {
             _cityParkService = cityParkService;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -28,16 +30,17 @@ namespace ExampleProject.Controllers
         {
             try
             {
-                await _cityParkService.AddCityPark(cityParkDto);
+                var cityPark = _mapper.Map<CityPark>(cityParkDto);
+                await _cityParkService.AddCityPark(cityPark);
                 return StatusCode(201);
             }
             catch (ObjectNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            catch
+            catch(Exception ex)
             {
-                return StatusCode(500, "Something went wrong");
+                return NotFound(ex.Message);
             }
         }
 
@@ -47,7 +50,8 @@ namespace ExampleProject.Controllers
         {
             try
             {
-                return Ok(await _cityParkService.GetCityParkById(id));
+                var cityPark = await _cityParkService.GetCityParkById(id);
+                return Ok(_mapper.Map<CityParkDto>(cityPark));
             }
             catch (ObjectNotFoundException ex)
             {
@@ -65,15 +69,16 @@ namespace ExampleProject.Controllers
         {
             try
             {
-                return Ok(await _cityParkService.GetAllCityParks(sieveModel));
+                var cityParks = await _cityParkService.GetAllCityParks(sieveModel);
+                return Ok(_mapper.Map<List<CityParkDto>>(cityParks));
             }
             catch (ObjectNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "Something went wrong");
+                return NotFound(ex.Message);
             }
         }
 
@@ -102,7 +107,8 @@ namespace ExampleProject.Controllers
         {
             try
             {
-                await _cityParkService.UpdateCityPark(cityParkDto, id);
+                var updateCityPark = _mapper.Map<UpdateCityPark>(cityParkDto);
+                await _cityParkService.UpdateCityPark(updateCityPark, id);
                 return StatusCode(200);
             }
             catch (ObjectNotFoundException ex)

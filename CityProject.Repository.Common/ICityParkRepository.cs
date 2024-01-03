@@ -1,11 +1,10 @@
-﻿using CityProject.Dtos;
-using CityProject.Models;
+﻿using CityProject.DAL.Entities;
 
 
 namespace CityProject.Repository.Common
 {
-    public interface ICityParkRepository : IGenericRepository<CityPark>
+    public interface ICityParkRepository : IGenericRepository<CityParkEntity>
     {
-        IEnumerable<CityPark> GetParksByCity(City city);
+        IEnumerable<CityParkEntity> GetParksByCity(CityEntity city);
     }
 }

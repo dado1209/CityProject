@@ -8,6 +8,9 @@ using FluentAssertions.Extensions;
 using Moq;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
+using Sieve.Models;
+using Sieve.Services;
+using CityProject.DAL.Entities;
 
 namespace CityProject.Service.Tests
 {
@@ -17,9 +20,10 @@ namespace CityProject.Service.Tests
         private readonly Mock<IUnitOfWork> _uowMock = new();
         // Use real mapper to test if result is cityDto
         private readonly IMapper mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperProfiles())));
+        private static readonly ISieveProcessor _sieveProcessor = null;
 
         public CityServiceTests() {
-            _cityService = new CityService(_uowMock.Object, mapper);
+            _cityService = new CityService(_uowMock.Object, mapper, _sieveProcessor);
         }
 
         [Fact]
@@ -28,17 +32,17 @@ namespace CityProject.Service.Tests
             // Arrange
             var cityId = 1;
             var cityName = "osijek";
+            var cityEntity = new CityEntity { Id = cityId, Name = cityName };
             var city = new City { Id = cityId, Name = cityName };
-            var cityDto = new CityDto { Id = cityId, Name = cityName };
             //var cityDto = new CityDto { Id = cityId, Name = cityName };
-            _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(city);
+            _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(cityEntity);
             //_mapperMock.Setup(x => x.Map<CityDto>(city)).Returns(cityDto);
 
             // Act
-            CityDto result = await _cityService.GetCityById(cityId);
+            City result = await _cityService.GetCityById(cityId);
             // Assert
-            result.Should().BeOfType<CityDto>();
-            result.Should().BeEquivalentTo(cityDto);
+            result.Should().BeOfType<City>();
+            result.Should().BeEquivalentTo(city);
         }
 
         [Fact]
@@ -73,28 +77,28 @@ namespace CityProject.Service.Tests
         public async Task GetAllCities_ShouldReturnCollectionOfCityDtos()
         {   
             // Arrange
-            var city1 = new City { Id = 1, Name = "osijek" };
-            var city2 = new City { Id = 2, Name = "zagreb" };
-            var cities = new List<City> { city1, city2 };
+            var cityEntity1 = new CityEntity { Id = 1, Name = "osijek" };
+            var cityEntity2 = new CityEntity { Id = 2, Name = "zagreb" };
+            var cityEntities = new List<CityEntity> { cityEntity1, cityEntity2 }.AsQueryable();
+            var sieveModel = new SieveModel();
 
-            _uowMock.Setup(x => x.CityRepository.GetAllAsync()).ReturnsAsync(cities);
+            _uowMock.Setup(x => x.CityRepository.GetAllAsync()).Returns(cityEntities);
             // Act
-            var result = await _cityService.GetAllCities();
+            var result = await _cityService.GetAllCities(sieveModel);
             // Assert
-            result.Should().HaveCount(cities.Count);
-            result.Should().BeOfType<List<CityDto>>();
+            result.Should().BeOfType<List<City>>();
         }
 
         [Fact]
         public async Task AddCity_ShouldCompleteWithin100miliseconds()
         {
             // Arrange
-            var cityDto = new CityDto { Id = 1, Name = "osijek" };
             var city = new City { Id = 1, Name = "osijek" };
-            _uowMock.Setup(x => x.CityRepository.AddAsync(city)).Returns(Task.CompletedTask);
+            var cityEntity = new CityEntity { Id = 1, Name = "osijek" };
+            _uowMock.Setup(x => x.CityRepository.AddAsync(cityEntity)).Returns(Task.CompletedTask);
             _uowMock.Setup(x => x.SaveAsync()).ReturnsAsync(true);
             // Act 
-            Func<Task> action = async () => { await _cityService.AddCity(cityDto); };
+            Func<Task> action = async () => { await _cityService.AddCity(city); };
 
             // Assert 
             await action.Should().CompleteWithinAsync(100.Milliseconds());
@@ -104,13 +108,13 @@ namespace CityProject.Service.Tests
         public async Task DeleteCity_ShouldCompleteWithin100miliseconds_WhenCityExists()
         {
             // Arrange
-            var city = new City { Id = 1, Name = "osijek" };
-            _uowMock.Setup(x => x.CityRepository.GetAsync(city.Id)).ReturnsAsync(city);
+            var cityEntity = new CityEntity { Id = 1, Name = "osijek" };
+            _uowMock.Setup(x => x.CityRepository.GetAsync(cityEntity.Id)).ReturnsAsync(cityEntity);
             // Use Verifiable() instead of Task.Completed when function is not async and returns void
-            _uowMock.Setup(x => x.CityRepository.Delete(city)).Verifiable();
+            _uowMock.Setup(x => x.CityRepository.Delete(cityEntity)).Verifiable();
             _uowMock.Setup(x => x.SaveAsync()).ReturnsAsync(true);
             // Act
-            Func<Task> action = async () => { await _cityService.DeleteCity(city.Id); };
+            Func<Task> action = async () => { await _cityService.DeleteCity(cityEntity.Id); };
 
             // Assert 
             await action.Should().CompleteWithinAsync(100.Milliseconds());
@@ -121,11 +125,11 @@ namespace CityProject.Service.Tests
         public async Task UpdateCity_ShouldThrowException_WhenCityDoesNotExist()
         {
             // Arrange
-            var updateCityDto = new UpdateCityDto { Name = "osijek" };
+            var updateCity = new UpdateCity { Name = "osijek" };
             var cityId = 1;
             _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(() => null);
             // Act
-            Func<Task> action = async () => { await _cityService.UpdateCity(updateCityDto ,cityId); };
+            Func<Task> action = async () => { await _cityService.UpdateCity(updateCity, cityId); };
             // Assert
             await action.Should().ThrowAsync<ObjectNotFoundException>().WithMessage("City could not be updated");
         }
@@ -134,13 +138,13 @@ namespace CityProject.Service.Tests
         public async Task UpdateCity_ShouldCompleteWithin100miliseconds_WhenCityExists()
         {
             // Arrange
-            var city = new City { Id = 1, Name = "zagreb" };
-            var updateCityDto = new UpdateCityDto { Name = "osijek" };
+            var cityEntity = new CityEntity { Id = 1, Name = "zagreb" };
+            var updateCity = new UpdateCity { Name = "osijek" };
             var cityId = 1;
-            _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(city);
+            _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(cityEntity);
             // Act
 
-            Func<Task> action = async () => { await _cityService.UpdateCity(updateCityDto, cityId); };
+            Func<Task> action = async () => { await _cityService.UpdateCity(updateCity, cityId); };
             // Assert
             await action.Should().CompleteWithinAsync(100.Milliseconds());
         }

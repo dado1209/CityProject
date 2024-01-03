@@ -11,13 +11,13 @@ namespace CityProject.Service
 {
     public interface ICityService
     {
-        Task<CityDto> GetCityById(int id);
-        Task<List<CityDto>> GetAllCities(SieveModel sieveModel);
+        Task<City> GetCityById(int id);
+        Task<List<City>> GetAllCities(SieveModel sieveModel);
 
-        Task AddCity(CityDto cityDto);
+        Task AddCity(City city);
         Task DeleteCity(int id);
 
-        Task UpdateCity(UpdateCityDto cityDto, int cityId);
+        Task UpdateCity(UpdateCity city, int cityId);
 
     }
 }

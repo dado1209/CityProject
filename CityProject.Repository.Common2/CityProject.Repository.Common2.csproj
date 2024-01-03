@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CityProject.DAL\CityProject.DAL.csproj" />
+    <PackageReference Include="Sieve" Version="2.5.5" />
   </ItemGroup>
 
 </Project>

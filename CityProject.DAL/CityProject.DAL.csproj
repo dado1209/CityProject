@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CityProject.Models\CityProject.Models.csproj" />
-    <ProjectReference Include="..\CityProject.Repository.Common\CityProject.Repository.Common.csproj" />
+    <ProjectReference Include="..\CityProject.Repository.Common\CityProject.Repository.Common2.csproj" />
   </ItemGroup>
 
 </Project>

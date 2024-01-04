@@ -13,8 +13,4 @@
     <PackageReference Include="Sieve" Version="2.5.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CityProject.Repository.Common\CityProject.Repository.Common2.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CityProject.Service.Mappings
 {
-    // All mapping related to the service layer
+    // All mappings related to the service layer
     public class AutoMapperServiceProfile : Profile
     {
         public AutoMapperServiceProfile() {

@@ -4,7 +4,7 @@ using CityProject.Models;
 
 namespace CityProject.WebAPI.Mappings
 {
-    // All mapping related to the WebAPI layer
+    // All mappings related to the WebAPI layer
     public class AutoMapperWebAPIProfile: Profile
     {
         public AutoMapperWebAPIProfile()

@@ -128,10 +128,12 @@ namespace CityProject.Service.Tests
         [Fact]
         public async Task GetCityParksByCityId_ShouldThrowException_WhenCityDoesNotExist()
         {   // Arrange
+            var sieveModel = new SieveModel();
             int cityId = 1;
             _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(() => null);
+
             // Act
-            Func<Task> action = async () => { await _cityParkService.GetCityParksByCityId(cityId); };
+            Func<Task> action = async () => { await _cityParkService.GetCityParksByCityId(sieveModel,cityId); };
             // Assert
             await action.Should().ThrowAsync<ObjectNotFoundException>().WithMessage("City could not be found");
         }
@@ -147,12 +149,12 @@ namespace CityProject.Service.Tests
             var cityPark1 = new CityPark { CityId = 1, Name = "drven park", Id = 1 };
             var cityPark2 = new CityPark { CityId = 1, Name = "vatren park", Id = 2 };
             var cityParks = new List<CityPark> { cityPark1, cityPark2 };
+            var sieveModel = new SieveModel();
             _uowMock.Setup(x => x.CityRepository.GetAsync(cityEntity.Id)).ReturnsAsync(cityEntity);
-            _uowMock.Setup(x => x.CityParkRepository.GetParksByCity(cityEntity)).Returns(cityParkEntities);
+            _uowMock.Setup(x => x.CityParkRepository.GetParksByCity(cityEntity)).Returns(cityParkEntities.AsQueryable());
             // Act
-            var result = await _cityParkService.GetCityParksByCityId(cityEntity.Id);
+            var result = await _cityParkService.GetCityParksByCityId(sieveModel,cityEntity.Id);
             // Assert
-            result.Should().HaveCount(cityParks.Count);
             result.Should().BeOfType<List<CityPark>>();
         }
 

@@ -56,12 +56,12 @@ namespace CityProject.Service
             return _mapper.Map<CityPark>(cityParkEntity);
         }
 
-        public async Task<IEnumerable<CityPark>> GetCityParksByCityId(int cityId)
+        public async Task<List<CityPark>> GetCityParksByCityId(SieveModel sieveModel,int cityId)
         {
             var cityEntity = await _uow.CityRepository.GetAsync(cityId);
             if (cityEntity == null) throw new ObjectNotFoundException("City could not be found");
-            var cityParkEntities = _uow.CityParkRepository.GetParksByCity(cityEntity);
-            return _mapper.Map<IEnumerable<CityPark>>(cityParkEntities);
+            var cityParkEntities = _sieveProcessor.Apply(sieveModel, _uow.CityParkRepository.GetParksByCity(cityEntity));
+            return _mapper.Map<List<CityPark>>(cityParkEntities);
         }
 
         public async Task UpdateCityPark(UpdateCityPark cityPark, int cityParkId)

@@ -5,6 +5,6 @@ namespace CityProject.Repository.Common
 {
     public interface ICityParkRepository : IGenericRepository<CityParkEntity>
     {
-        IEnumerable<CityParkEntity> GetParksByCity(CityEntity city);
+        IQueryable<CityParkEntity> GetParksByCity(CityEntity city);
     }
 }

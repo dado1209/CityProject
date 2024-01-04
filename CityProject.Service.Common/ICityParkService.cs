@@ -19,6 +19,6 @@ namespace CityProject.Service.Common
 
         Task UpdateCityPark(UpdateCityPark cityPark, int cityParkId);
 
-        Task<IEnumerable<CityPark>> GetCityParksByCityId(int cityId);
+        Task<List<CityPark>> GetCityParksByCityId(SieveModel sieveModel,int cityId);
     }
 }

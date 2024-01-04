@@ -10,9 +10,9 @@ namespace CityProject.Repository
     {
         public CityParkRepository(DataContext dc) : base(dc) { }
 
-        public IEnumerable<CityParkEntity> GetParksByCity(CityEntity city)
+        public IQueryable<CityParkEntity> GetParksByCity(CityEntity city)
         {
-            return city.Parks;
+            return city.Parks.AsQueryable();
         }
     }
 }

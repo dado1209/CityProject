@@ -18,12 +18,14 @@ namespace CityProject.Service.Tests
     {
         private readonly CityService _cityService;
         private readonly Mock<IUnitOfWork> _uowMock = new();
+        private readonly Mock<ICityRepository> _cityRepositoryMock = new();
+
         // Use real mapper to test if result is cityDto
         private readonly IMapper mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperServiceProfile())));
         private static readonly Mock<ISieveProcessor> _sieveProcessorMock = new();
 
         public CityServiceTests() {
-            _cityService = new CityService(_uowMock.Object, mapper, _sieveProcessorMock.Object);
+            _cityService = new CityService(_uowMock.Object, mapper, _sieveProcessorMock.Object, _cityRepositoryMock.Object);
         }
 
         [Fact]
@@ -35,7 +37,7 @@ namespace CityProject.Service.Tests
             var cityEntity = new CityEntity { Id = cityId, Name = cityName };
             var city = new City { Id = cityId, Name = cityName };
             //var cityDto = new CityDto { Id = cityId, Name = cityName };
-            _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(cityEntity);
+            _cityRepositoryMock.Setup(x => x.GetAsync(cityId)).ReturnsAsync(cityEntity);
             //_mapperMock.Setup(x => x.Map<CityDto>(city)).Returns(cityDto);
 
             // Act
@@ -50,7 +52,7 @@ namespace CityProject.Service.Tests
         {
             // Arrange
             var cityId = 1;
-            _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(() => null);
+            _cityRepositoryMock.Setup(x => x.GetAsync(cityId)).ReturnsAsync(() => null);
 
             // Act 
             Func<Task> action = async () => { var result = await _cityService.GetCityById(cityId); };
@@ -64,7 +66,7 @@ namespace CityProject.Service.Tests
         {
             // Arrange
             var cityId = 1;
-            _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(() => null);
+            _cityRepositoryMock.Setup(x => x.GetAsync(cityId)).ReturnsAsync(() => null);
 
             // Act 
             Func<Task> action = async () => { await _cityService.DeleteCity(cityId); };
@@ -81,9 +83,9 @@ namespace CityProject.Service.Tests
             var cityEntity2 = new CityEntity { Id = 2, Name = "zagreb" };
             var cityEntities = new List<CityEntity> { cityEntity1, cityEntity2 }.AsQueryable();
             var sieveModel = new SieveModel();
-
-            _uowMock.Setup(x => x.CityRepository.GetAll()).Returns(cityEntities);
-            _sieveProcessorMock.Setup(x => x.Apply(sieveModel, _uowMock.Object.CityRepository.GetAll(), null, false, false, false)).Returns(cityEntities);
+            _cityRepositoryMock.Setup(x => x.GetAll()).Returns(cityEntities);
+            //_uowMock.Setup(x => x.CityRepository.GetAll()).Returns(cityEntities);
+            _sieveProcessorMock.Setup(x => x.Apply(sieveModel, _cityRepositoryMock.Object.GetAll(), null, false, false, false)).Returns(cityEntities);
             // Act
             var result = await _cityService.GetAllCities(sieveModel);
             // Assert
@@ -96,7 +98,7 @@ namespace CityProject.Service.Tests
             // Arrange
             var city = new City { Id = 1, Name = "osijek" };
             var cityEntity = new CityEntity { Id = 1, Name = "osijek" };
-            _uowMock.Setup(x => x.CityRepository.AddAsync(cityEntity)).Returns(Task.CompletedTask);
+            _cityRepositoryMock.Setup(x => x.AddAsync(cityEntity)).Returns(Task.CompletedTask);
             _uowMock.Setup(x => x.SaveAsync()).ReturnsAsync(true);
             // Act 
             Func<Task> action = async () => { await _cityService.AddCity(city); };
@@ -110,9 +112,9 @@ namespace CityProject.Service.Tests
         {
             // Arrange
             var cityEntity = new CityEntity { Id = 1, Name = "osijek" };
-            _uowMock.Setup(x => x.CityRepository.GetAsync(cityEntity.Id)).ReturnsAsync(cityEntity);
+            _cityRepositoryMock.Setup(x => x.GetAsync(cityEntity.Id)).ReturnsAsync(cityEntity);
             // Use Verifiable() instead of Task.Completed when function is not async and returns void
-            _uowMock.Setup(x => x.CityRepository.Delete(cityEntity)).Verifiable();
+            _cityRepositoryMock.Setup(x => x.Delete(cityEntity)).Verifiable();
             _uowMock.Setup(x => x.SaveAsync()).ReturnsAsync(true);
             // Act
             Func<Task> action = async () => { await _cityService.DeleteCity(cityEntity.Id); };
@@ -128,7 +130,7 @@ namespace CityProject.Service.Tests
             // Arrange
             var updateCity = new UpdateCity { Name = "osijek" };
             var cityId = 1;
-            _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(() => null);
+            _cityRepositoryMock.Setup(x => x.GetAsync(cityId)).ReturnsAsync(() => null);
             // Act
             Func<Task> action = async () => { await _cityService.UpdateCity(updateCity, cityId); };
             // Assert
@@ -142,7 +144,7 @@ namespace CityProject.Service.Tests
             var cityEntity = new CityEntity { Id = 1, Name = "zagreb" };
             var updateCity = new UpdateCity { Name = "osijek" };
             var cityId = 1;
-            _uowMock.Setup(x => x.CityRepository.GetAsync(cityId)).ReturnsAsync(cityEntity);
+            _cityRepositoryMock.Setup(x => x.GetAsync(cityId)).ReturnsAsync(cityEntity);
             // Act
 
             Func<Task> action = async () => { await _cityService.UpdateCity(updateCity, cityId); };

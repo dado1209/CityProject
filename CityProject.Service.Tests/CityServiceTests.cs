@@ -1,5 +1,4 @@
 using AutoMapper;
-using CityProject.Common;
 using CityProject.Repository.Common;
 using CityProject.Dtos;
 using CityProject.Models;
@@ -11,6 +10,7 @@ using System.Data.Entity.Core;
 using Sieve.Models;
 using Sieve.Services;
 using CityProject.DAL.Entities;
+using CityProject.Service.Mappings;
 
 namespace CityProject.Service.Tests
 {
@@ -19,11 +19,11 @@ namespace CityProject.Service.Tests
         private readonly CityService _cityService;
         private readonly Mock<IUnitOfWork> _uowMock = new();
         // Use real mapper to test if result is cityDto
-        private readonly IMapper mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperProfiles())));
-        private static readonly ISieveProcessor _sieveProcessor = null;
+        private readonly IMapper mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperServiceProfile())));
+        private static readonly Mock<ISieveProcessor> _sieveProcessorMock = new();
 
         public CityServiceTests() {
-            _cityService = new CityService(_uowMock.Object, mapper, _sieveProcessor);
+            _cityService = new CityService(_uowMock.Object, mapper, _sieveProcessorMock.Object);
         }
 
         [Fact]
@@ -83,6 +83,7 @@ namespace CityProject.Service.Tests
             var sieveModel = new SieveModel();
 
             _uowMock.Setup(x => x.CityRepository.GetAllAsync()).Returns(cityEntities);
+            _sieveProcessorMock.Setup(x => x.Apply(sieveModel, _uowMock.Object.CityRepository.GetAllAsync(), null, false, false, false)).Returns(cityEntities);
             // Act
             var result = await _cityService.GetAllCities(sieveModel);
             // Assert

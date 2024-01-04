@@ -78,7 +78,7 @@ namespace ExampleProject.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (Exception ex) 
+            catch
             {
                 return StatusCode(500, "Something went wrong");
             }

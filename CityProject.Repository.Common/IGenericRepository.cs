@@ -9,7 +9,7 @@ namespace CityProject.Repository.Common
     public interface IGenericRepository<T> where T : class
     {
         Task<T> GetAsync(int id);
-        IQueryable<T> GetAllAsync();
+        IQueryable<T> GetAll();
         Task AddAsync(T entity);
         void Delete(T entity);
     }

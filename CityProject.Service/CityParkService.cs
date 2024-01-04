@@ -44,7 +44,7 @@ namespace CityProject.Service
         public async Task<List<CityPark>> GetAllCityParks(SieveModel sieveModel)
         {
             //apply query parameters and get all city parks which match
-            var cityParkEntities = _sieveProcessor.Apply(sieveModel, _uow.CityParkRepository.GetAllAsync());
+            var cityParkEntities = _sieveProcessor.Apply(sieveModel, _uow.CityParkRepository.GetAll());
             // Map city parks to city park dtos before returning the value
             return _mapper.Map<List<CityPark>>(cityParkEntities);
         }

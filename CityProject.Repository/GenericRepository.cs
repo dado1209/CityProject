@@ -33,7 +33,7 @@ namespace CityProject.Repository
             table.Remove(entity);
         }
 
-        public IQueryable<T> GetAllAsync()
+        public IQueryable<T> GetAll()
         {
             return table.AsQueryable();
         }

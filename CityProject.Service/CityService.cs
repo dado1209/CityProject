@@ -40,7 +40,7 @@ namespace CityProject.Service
         public async Task<List<City>> GetAllCities(SieveModel sieveModel)
         {
             //apply query parameters and get all city entities which match
-            var cityEntities = _sieveProcessor.Apply(sieveModel, _uow.CityRepository.GetAllAsync());
+            var cityEntities = _sieveProcessor.Apply(sieveModel, _uow.CityRepository.GetAll());
             // Map city entities to cities before returning the value
             return _mapper.Map<List<City>>(cityEntities); 
         }

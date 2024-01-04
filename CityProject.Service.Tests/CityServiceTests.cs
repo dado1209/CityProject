@@ -82,8 +82,8 @@ namespace CityProject.Service.Tests
             var cityEntities = new List<CityEntity> { cityEntity1, cityEntity2 }.AsQueryable();
             var sieveModel = new SieveModel();
 
-            _uowMock.Setup(x => x.CityRepository.GetAllAsync()).Returns(cityEntities);
-            _sieveProcessorMock.Setup(x => x.Apply(sieveModel, _uowMock.Object.CityRepository.GetAllAsync(), null, false, false, false)).Returns(cityEntities);
+            _uowMock.Setup(x => x.CityRepository.GetAll()).Returns(cityEntities);
+            _sieveProcessorMock.Setup(x => x.Apply(sieveModel, _uowMock.Object.CityRepository.GetAll(), null, false, false, false)).Returns(cityEntities);
             // Act
             var result = await _cityService.GetAllCities(sieveModel);
             // Assert

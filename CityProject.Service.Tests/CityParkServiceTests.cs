@@ -90,8 +90,8 @@ namespace CityProject.Service.Tests
             var cityParkEntity2 = new CityParkEntity { CityId = 1, Name = "vatren park", Id = 2 };
             var cityParkEntities = new List<CityParkEntity> { cityParkEntity1, cityParkEntity2 }.AsQueryable();
             var sieveModel = new SieveModel();
-            _uowMock.Setup(x => x.CityParkRepository.GetAllAsync()).Returns(cityParkEntities);
-            _sieveProcessorMock.Setup(x => x.Apply(sieveModel, _uowMock.Object.CityParkRepository.GetAllAsync(), null, false, false, false)).Returns(cityParkEntities);
+            _uowMock.Setup(x => x.CityParkRepository.GetAll()).Returns(cityParkEntities);
+            _sieveProcessorMock.Setup(x => x.Apply(sieveModel, _uowMock.Object.CityParkRepository.GetAll(), null, false, false, false)).Returns(cityParkEntities);
             // Act
             var result = await _cityParkService.GetAllCityParks(sieveModel);
             // Assert
